@@ -1,0 +1,77 @@
+
+########################################################
+##### Batch learning dataset for OBSV-SVM experiment one
+#########################################################
+
+###### Nursery dataset
+# best stepc <- Norm(dc)^2/sqrt(i)
+Data <- read.csv("/home/wenjuan/Documents/DataSets/DataSets_Classification/nursery.csv",header = F,sep = ";") ###import data with your own file path
+x <- Data[,c(-9)]
+y <- Data[,9]
+set.seed(123)
+ind <- sample.int(nrow(x), size = nrow(x), replace = FALSE, prob = NULL)
+x <- x[ind,]
+y<- y[ind]
+Datay <- cbind(y,x)
+
+
+###### Sonar dataset
+# best stepc <- Norm(dc)/sqrt(i)
+Data <- read.csv("/home/wenjuan/Documents/DataSets/DataSets_Classification/sonar.csv",header = F,sep = ",")
+x <- Data[,c(-61)]
+y <- Data[,61]
+y<- as.factor(y)
+y<- ifelse(y == "R",1,-1)
+set.seed(125)
+ind <- sample.int(nrow(x), size = nrow(x), replace = FALSE, prob = NULL)
+x <- x[ind,]
+y<- y[ind]
+Datay <- cbind(y,x)
+
+
+#### covtype dataset
+##best stepc <- 1/i
+Data <- read.csv("/home/wenjuan/Documents/DataSets/DataSets_Classification/covtype.data",header = F,sep = ",")
+x <- Data[,c(-55)]
+y <- Data[,55]
+y[which(y==7)] <- -1
+y[which(y==2)] <- -1
+y[which(y==3)] <- -1
+y[which(y==4)] <- -1
+y[which(y==5)] <- -1
+y[which(y==6)] <- -1
+set.seed(152)
+ind <- sample.int(nrow(x), size = nrow(x), replace = FALSE, prob = NULL)
+x <- x[ind,]
+y<- y[ind]
+Datay <- cbind(y,x)
+
+
+###############################################################################
+######sequential dataset; Online learning dataset for OBSG-SVM experiment two
+###############################################################################
+
+##### Movement AAL dataset        
+# best stepc <- Norm(dc)^20/sqrt(i)  
+Data <- read.csv("/home/wenjuan/Documents/DataSets/DataSets_Classification/MovementAAL/MovementAAL_whole.csv",header = F,sep = ",")
+x <- Data[,c(-5)]
+y <- Data[,5]
+
+
+#### cargo dataset 
+## best stepc <- 1/(i*i)  slightly better than stepc <- 1/sqrt(i)  
+Data <- read.csv("/home/wenjuan/Documents/DataSets/DataSets_Classification/c2k_data_comma.csv",header = T,sep = ",")
+x <- Data[,c(-26)]
+y <- Data[,26]
+y[which(y==2)] <- 1
+y[which(y==3)] <- -1
+
+
+###### HTsensor dataset
+#stepc <- Norm(dc)^2/sqrt(i)
+Data <- read.csv("/home/wenjuan/Documents/DataSets/DataSets_Classification/HTsensor/HTsensor.csv")
+x <- Data[1:62222,-c(1,2,3,14)]
+y <- Data[1:62222,14]
+
+
+
