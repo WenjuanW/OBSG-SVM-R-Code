@@ -1,0 +1,120 @@
+
+########################################
+## OBSV-SVM online learning online predicting
+#######################################
+
+
+onlineBilevelSvm_op <- function(x,y,w0,c){
+  
+  streamData <- as.matrix(x)
+  y <- as.vector(y)
+  
+  Ncols <- ncol(streamData)
+  Nrows <- nrow(streamData)
+  i <- 1
+  #w <- w0
+  w <- w0/Norm(w0)
+  b <- 0
+  #c <- 3
+  cmin <- 0
+  cmax <- 10^5
+  yii <- y[1]
+  xii <- streamData[1,]
+  prediction <- NULL
+  
+  for (i in 1:Nrows){
+    
+    pred1 <- sign(w%*%streamData[i,]+b)
+    prediction <- rbind(prediction,pred1)
+    
+    if( y[i]*(streamData[i,] %*% w+b) <1){
+      dw <- w - c*y[i]*streamData[i,]
+      stepw <-  1/(i)
+      w = w - stepw*dw
+      b <- b - c*stepw*(-y[i])  # the result is better without updating b
+      
+      dc <- -t(y[i]*streamData[i,])%*%(yii*xii)
+      stepc <- 0.0001/sqrt(i)
+      c <- c - stepc*dc
+      #print(Norm(dc^2))
+      #print(Norm(dc)/sqrt(i))
+      if(c < cmin)
+        c <- 0.00001
+      if (c>cmax)
+        c <- cmax
+      
+      yii <- y[i]
+      xii <- streamData[i,]
+    }
+    
+  }
+  
+  
+  a <- length(which(prediction==y[1:nrow(prediction)]))/nrow(prediction)
+  return(list("pred"=a, "Cvalue"=c))
+}
+
+#################################################
+###Online SVM
+###################################################
+
+onlineSvm_op <- function(x,y,w0,c){
+  streamData <- as.matrix(x)
+  y <- as.vector(y)
+  
+  Ncols <- ncol(streamData)
+  Nrows <- nrow(streamData)
+  i <- 1
+  w <- w0
+  w <- w/Norm(w)
+  b <- 0
+  prediction <- NULL
+  
+  for(i in 1:Nrows){ 
+    pred1 <- sign(w%*%streamData[i,]+b)
+    prediction <- rbind(prediction,pred1)
+    stepw <-   1/(i)
+    
+    if( y[i]*(streamData[i,] %*% w+b) < 1){
+      
+      dw <- w - c*y[i]*streamData[i,]
+      w = w - stepw*dw
+      b <- b - stepw*(-y[i])  # the result is better without updating b
+    }else{
+      dw <- w 
+      w = w - stepw*dw
+      b <- b 
+    }
+  }
+  
+  a <- length(which(prediction==y[1:nrow(prediction)]))/nrow(prediction)
+  return(a)
+}
+#onlineSvm_op(x,y,w0,c)
+
+#############################################
+## one online pass
+##############################################
+w0 <- as.vector(runif(ncol(x), min = -1,max = 1))
+acc1 <- matrix(0,nrow = 10,ncol = 1)
+acc2 <- matrix(0,nrow = 10,ncol = 1)
+BestC <- matrix(0,nrow = 10,ncol = 1)
+for (i in 1:10) {
+  c <- 5^(10-i)
+  dd <- onlineBilevelSvm_op(x,y,w0,c)
+  acc1[i] <- dd$pred
+  BestC[i] <- dd$Cvalue
+  acc2[i] <- onlineSvm_op(x,y,w0,c)
+}
+
+plot(acc1,type="l",col="blue",ylab = "prediction accuracy",xlab = "Different C values  5^(5-x)",ylim = c(0,1),main = "MovementAAL")
+lines(acc2,type="l",col="red")
+abline(h=max(acc1),lty=2,col="blue")
+abline(h=max(acc2),lty=2,col="red")
+legend(1, 0.4, legend=c("OBSG-SVM", "OSVM"), col=c("blue","red"), lty=1 ,cex=0.8)
+
+max(acc1)
+BestC[which(acc1==max(acc1))]
+max(acc2)
+5^(-which(acc2==max(acc2)))
+
