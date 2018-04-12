@@ -30,7 +30,7 @@ onlineBilevelSvm <- function(xtrain,ytrain,xtest,ytest,w0,c){
       w = w - stepw*dw
       b <- b - c*stepw*(-y[i])  # the result is better without updating b
       dc <- -t(y[i]*streamData[i,])%*%(yii*xii)
-      stepc <- Norm(dc)^2/sqrt(i)   
+      stepc <- Norm(dc)/sqrt(i)   
       c <- c - stepc*dc
       if(c < cmin)
         c <- 0.00001
