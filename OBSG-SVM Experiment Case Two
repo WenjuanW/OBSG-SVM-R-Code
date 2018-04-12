@@ -107,7 +107,7 @@ for (i in 1:10) {
   acc2[i] <- onlineSvm_op(x,y,w0,c)
 }
 
-plot(acc1,type="l",col="blue",ylab = "prediction accuracy",xlab = "Different C values  5^(5-x)",ylim = c(0,1),main = "MovementAAL")
+plot(acc1,type="l",col="blue",ylab = "prediction accuracy",xlab = " C values  5^(5-x)",ylim = c(0,1),main = "MovementAAL")
 lines(acc2,type="l",col="red")
 abline(h=max(acc1),lty=2,col="blue")
 abline(h=max(acc2),lty=2,col="red")
