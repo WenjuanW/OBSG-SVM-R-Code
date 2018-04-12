@@ -52,7 +52,7 @@ onlineBilevelSvm <- function(xtrain,ytrain,xtest,ytest,w0,c){
 ########################################################
 ##### SVM with online pass for training and batch testing
 ##########################################################
-onlineSvm_vt <- function(xtrain,ytrain,xtest,ytest,w0,c){
+onlineSvm <- function(xtrain,ytrain,xtest,ytest,w0,c){
   streamData <- as.matrix(xtrain)
   y <- as.vector(ytrain)
   
