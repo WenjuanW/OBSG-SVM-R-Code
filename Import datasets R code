@@ -16,17 +16,6 @@ x <- x[ind,]
 y<- y[ind]
 Datay <- cbind(y,x)
 
-###### Nursery dataset
-# best stepc <- Norm(dc)^2/sqrt(i)
-Data <- read.csv("/home/wenjuan/Documents/DataSets/DataSets_Classification/nursery.csv",header = F,sep = ";") ###import data with your own file path
-x <- Data[,c(-9)]
-y <- Data[,9]
-set.seed(123)
-ind <- sample.int(nrow(x), size = nrow(x), replace = FALSE, prob = NULL)
-x <- x[ind,]
-y<- y[ind]
-Datay <- cbind(y,x)
-
 #### covtype dataset
 ##best stepc <- 1/i
 Data <- read.csv("/home/wenjuan/Documents/DataSets/DataSets_Classification/covtype.data",header = F,sep = ",")
@@ -43,6 +32,19 @@ ind <- sample.int(nrow(x), size = nrow(x), replace = FALSE, prob = NULL)
 x <- x[ind,]
 y<- y[ind]
 Datay <- cbind(y,x)
+
+
+###### Nursery dataset
+# best stepc <- Norm(dc)^2/sqrt(i)
+Data <- read.csv("/home/wenjuan/Documents/DataSets/DataSets_Classification/nursery.csv",header = F,sep = ";") ###import data with your own file path
+x <- Data[,c(-9)]
+y <- Data[,9]
+set.seed(123)
+ind <- sample.int(nrow(x), size = nrow(x), replace = FALSE, prob = NULL)
+x <- x[ind,]
+y<- y[ind]
+Datay <- cbind(y,x)
+
 
 
 ###############################################################################
