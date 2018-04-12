@@ -34,7 +34,7 @@ onlineBilevelSvm_op <- function(x,y,w0,c){
       b <- b - c*stepw*(-y[i])  # the result is better without updating b
       
       dc <- -t(y[i]*streamData[i,])%*%(yii*xii)
-      stepc <- 0.0001/sqrt(i)
+      stepc <- Norm(dc)^20/sqrt(i)
       c <- c - stepc*dc
       #print(Norm(dc^2))
       #print(Norm(dc)/sqrt(i))
