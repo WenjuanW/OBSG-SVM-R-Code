@@ -2,7 +2,7 @@
 ########################################
 ## OBSV-SVM online learning online predicting
 #######################################
-
+library("pracma", lib.loc="~/R/x86_64-pc-linux-gnu-library/3.2")
 
 onlineBilevelSvm_op <- function(x,y,w0,c){
   
